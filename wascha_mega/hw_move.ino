@@ -21,9 +21,7 @@ void  set_whell(char* side, char* direction)
 }
 
 void do_set_whell(int pins[], int map[]) 
-{
-  Serial.println("Ready to go through pins");
-  
+{ 
   for ( int i = 0; i <= 1; i++ )
   {
       Serial.print("Ready to analoWrite to ");
