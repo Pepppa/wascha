@@ -13,8 +13,10 @@ void detector_init()
 
 boolean detect() {
   int cm = calculate_cm();
-  return (is_not_changed_for_a_while(cm) || is_too_small(cm) || is_to_high(cm));  
+  boolean is_detected = (is_not_changed_for_a_while(cm) || is_too_small(cm) || is_to_high(cm));
+  return is_detected; 
 }
+
 
 int calculate_cm()
 {

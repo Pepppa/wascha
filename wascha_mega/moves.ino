@@ -1,8 +1,48 @@
 // interface functions
 
-enum dirs {NODIR, STOP, FORWARD, BACKWARD, LEFT, RIGHT};
+int current_direction = NODIR; 
 
-dirs current_direction = NODIR; 
+void go( int direction, int N)
+{
+//  switch(direction){
+//    case FORWARD:
+//        forward(N);
+//        break;
+//    case BACKWARD:
+//        backward(N);
+//        break;
+//    default:
+//        stop(N);
+//  }
+  if (direction == FORWARD){
+    forward(N);
+  } else if (direction == BACKWARD){
+    backward(N);
+  } else {
+    stop(N);
+  }
+}
+
+void turn(int direction, int N)
+{
+//  switch (direction) {
+//    case LEFT:
+//        turn_left(N);
+//        break;
+//    case RIGHT:
+//        turn_right(N);
+//        break;
+//    default:
+//        stop(N);
+//  }
+  if (direction == LEFT){
+    turn_left(N);
+  } else if (direction == RIGHT){
+    turn_right(N);
+  } else {
+    stop(N);
+  }
+}
 
 void forward(int N) {
   if (current_direction != FORWARD)
