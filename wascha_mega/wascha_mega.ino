@@ -51,8 +51,7 @@ void loop() {
     {
       // nothing blocks us.
       // what should we do?
-//      go(decide_movement(), 100);
-      go(FORWARD, 100);
+      go(decide_movement(), 200);
     }     
 //  }
 }

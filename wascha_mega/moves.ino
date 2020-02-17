@@ -18,6 +18,9 @@ void go( int direction, int N)
     forward(N);
   } else if (direction == BACKWARD){
     backward(N);
+  } else if (direction == LEFT || direction == RIGHT){
+    turn(direction, N/2);
+    forward(N/2);
   } else {
     stop(N);
   }
