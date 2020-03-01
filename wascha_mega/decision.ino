@@ -43,7 +43,9 @@ int decide_movement()
     {
       // switch to opposite direction
       pos = !pos;
-      dir = !dir;
+      //dir = !dir;
+      // after change - just random change direction
+      dir = RANDOM_ROUND;
     }      
   }
   

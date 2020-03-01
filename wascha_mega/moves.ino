@@ -21,6 +21,8 @@ void go( int direction, int N)
   } else if (direction == LEFT || direction == RIGHT){
     turn(direction, N/2);
     forward(N/2);
+  } else if (direction == RANDOM_ROUND){
+    random_round(N*2);
   } else {
     stop(N);
   }
@@ -45,6 +47,16 @@ void turn(int direction, int N)
   } else {
     stop(N);
   }
+}
+
+void random_round(int N) {
+    int time = random(1,9) * N / 10;
+    if (random(0,1)) {
+      turn(LEFT, time);
+    }
+    else {
+      turn(RIGHT, time);
+    }
 }
 
 void forward(int N) {
