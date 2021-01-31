@@ -1,0 +1,7 @@
+*.swp
+dep/ArduinoCore-avr
+*.d
+*.eep
+*.elf
+*.hex
+*.o
