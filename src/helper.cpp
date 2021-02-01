@@ -1,26 +1,19 @@
 #include "helper.h"
+#include "Wheel.h"
 
-std::vector<int> PINS = {3,7,10};
-int DELAY = 500;
-
+int DELAY = 2000;
+Wheel* wheel1 = nullptr;
 
 void init_all() {
-    for (auto pin : PINS) {
-        pinMode(pin, OUTPUT);
-    }
+    wheel1 = new Wheel(3, 4, 5, 6);
 }
 
 void turn_next() {
-    static int current_pos = 0;
-    int max_pos = 2;
-
-    digitalWrite(PINS[current_pos], HIGH);
+    wheel1->forward();
     delay(DELAY);
-    digitalWrite(PINS[current_pos], LOW);
+    wheel1->backward();
     delay(DELAY);
+    wheel1->stop();
+    delay(DELAY*2);
 
-    current_pos++;
-    if (current_pos > PINS.size()) {
-	    current_pos = 0;
-    }
 }
