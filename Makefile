@@ -1,59 +1,26 @@
 # Arduino makefile
+# original Makefile has been got from https://playground.arduino.cc/uploads/Learning/Makefile
 #
-# This makefile allows you to build sketches from the command line
-# without the Arduino environment (or Java).
 #
-# The Arduino environment does preliminary processing on a sketch before
-# compiling it.  If you're using this makefile instead, you'll need to do
-# a few things differently:
+# "make build"to compile/verify your program.
 #
-#   - Give your program's file a .cpp extension (e.g. foo.cpp).
-#
-#   - Put this line at top of your code: #include <WProgram.h>
-#
-#   - Write prototypes for all your functions (or define them before you
-#     call them).  A prototype declares the types of parameters a
-#     function will take and what type of value it will return.  This
-#     means that you can have a call to a function before the definition
-#     of the function.  A function prototype looks like the first line of
-#     the function, with a semi-colon at the end.  For example:
-#     int digitalRead(int pin);
-#
-# Instructions for using the makefile:
-#
-#  1. Copy this file into the folder with your sketch.
-#
-#  2. Below, modify the line containing "TARGET" to refer to the name of
-#     of your program's file without an extension (e.g. TARGET = foo).
-#
-#  3. Modify the line containg "ARDUINO" to point the directory that
-#     contains the Arduino core (for normal Arduino installations, this
-#     is the lib/targets/arduino sub-directory).
-#
-#  4. Modify the line containing "PORT" to refer to the filename
-#     representing the USB or serial connection to your Arduino board
-#     (e.g. PORT = /dev/tty.USB0).  If the exact name of this file
-#     changes, you can use * as a wildcard (e.g. PORT = /dev/tty.USB*).
-#
-#  5. At the command line, change to the directory containing your
-#     program's file and the makefile.
-#
-#  6. Type "make" and press enter to compile/verify your program.
-#
-#  7. Type "make upload", reset your Arduino board, and press enter  to
-#     upload your program to the Arduino board.
-#
-# $Id$
+# "make upload" to upload your program to the Arduino board.
 
-PORT = /dev/ttyUSB0
+SKETCH_DIR = src
+SKETCH_CXXSRC = $(wildcard $(SKETCH_DIR)/*.cpp)
+
+# name of main Arduino sketch file
 TARGET = src/blink
 
 # git clone git@github.com:arduino/ArduinoCore-avr.git
 ARDUINO = dep/ArduinoCore-avr/cores/arduino
 ARDUINO_MEGA = dep/ArduinoCore-avr/variants/mega
+#STL = dep/ArduinoSTL/src
 SRC = $(wildcard $(ARDUINO)/*.c)
 ASRC = $(wildcard $(ARDUINO)/*.S)
-CXXSRC = $(TARGET).cpp $(wildcard $(ARDUINO)/*.cpp)
+CXXSRC = $(wildcard $(ARDUINO)/*.cpp) #$(wildcard $(STL)/*.cpp)
+
+PORT = /dev/ttyUSB0
 MCU = atmega2560
 F_CPU = 16000000L
 FORMAT = ihex
@@ -71,8 +38,8 @@ CDEFS = -DF_CPU=$(F_CPU)
 CXXDEFS = -DF_CPU=$(F_CPU)
 
 # Place -I options here
-CINCS = -I$(ARDUINO) -I$(ARDUINO_MEGA)
-CXXINCS = -I$(ARDUINO) -I$(ARDUINO_MEGA)
+CINCS = -I$(ARDUINO) -I$(ARDUINO_MEGA) -I$(STL)
+CXXINCS = -I$(ARDUINO) -I$(ARDUINO_MEGA) -I$(STL)
 
 # Compiler flag to set the C Standard level.
 CSTANDARD = -std=gnu11
@@ -86,7 +53,7 @@ CXX_FROM_IDE = -g -Wall -fno-exceptions -ffunction-sections -fdata-sections -MMD
 
 CFLAGS = $(CDEBUG) $(CDEFS) $(CINCS) -O$(OPT) $(CWARN) $(CSTANDARD) $(CEXTRA)
 CXXFLAGS = $(CPPSTANDARD) $(CDEFS) $(CINCS) -O$(OPT) $(CXX_FROM_IDE)
-#ASFLAGS = -Wa,-adhlns=$(<:.S=.lst),-gstabs 
+#ASFLAGS = -Wa,-adhlns=$(<:.S=.lst),-gstabs
 LDFLAGS = 
 
 
@@ -96,7 +63,7 @@ AVRDUDE_PORT = $(PORT)
 AVRDUDE_WRITE_FLASH = -U flash:w:$(TARGET).hex
 AVRDUDE_FLAGS = -F -p $(MCU) -P $(AVRDUDE_PORT) -c $(AVRDUDE_PROGRAMMER) \
   -b $(UPLOAD_RATE)
-AVRDUDE_FROM_IDE = -C/usr/share/arduino/hardware/tools/avrdude.conf -v -v -v -v -D
+AVRDUDE_FROM_IDE = -C/usr/share/arduino/hardware/tools/avrdude.conf -v  -D
 
 # Program settings
 CC = /usr/share/arduino/hardware/tools/avr/bin/avr-gcc
@@ -110,7 +77,7 @@ REMOVE = rm -f
 MV = mv -f
 
 # Define all object files.
-OBJ = $(SRC:.c=.o) $(CXXSRC:.cpp=.o) $(ASRC:.S=.o)
+OBJ = $(SRC:.c=.o) $(CXXSRC:.cpp=.o) $(ASRC:.S=.o) $(SKETCH_CXXSRC:.cpp=.o)
 
 # Define all listing files.
 LST = $(ASRC:.S=.lst) $(CXXSRC:.cpp=.lst) $(SRC:.c=.lst)
@@ -123,7 +90,7 @@ ALL_ASFLAGS = -mmcu=$(MCU) -I. -x assembler-with-cpp $(ASFLAGS)
 
 
 # Default target.
-all: build
+all: build upload
 
 build: elf hex eep
 
