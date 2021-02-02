@@ -9,10 +9,13 @@ void init_all() {
 }
 
 void turn_next() {
+    Serial.println("FORWARD: ");
     wheel1->forward();
     delay(DELAY);
+    Serial.println("BACKWARD: ");
     wheel1->backward();
     delay(DELAY);
+    Serial.println("STOP: ");
     wheel1->stop();
     delay(DELAY*2);
 
