@@ -27,10 +27,10 @@
 #include "Wheel.h"
 
 Wheel::Wheel(int pin1P, int pin2P, int pin1N, int pin2N) {
-       this->R1N = new Relay(pin1N, "R1N");
-       this->R2N = new Relay(pin2N, "R2N");
-       this->R1P = new Relay(pin1P, "R1P");
-       this->R2P = new Relay(pin2P, "R2P");
+       this->R1N = new ElectromagneticRelay(pin1N, "R1N");
+       this->R2N = new ElectromagneticRelay(pin2N, "R2N");
+       this->R1P = new ElectromagneticRelay(pin1P, "R1P");
+       this->R2P = new ElectromagneticRelay(pin2P, "R2P");
     }
 
 Wheel::~Wheel() {

@@ -14,11 +14,11 @@
 class Relay {
 public:
     Relay(int pin, char name[]) ;
-    ~Relay() {;} ;
-    void enable();
-    void disable();
+    virtual ~Relay() {;} ;
+    virtual void enable() {};
+    virtual void disable() {};
 
-private:
+protected:
     int pin;
     char whoami[4] = {0,};
 };

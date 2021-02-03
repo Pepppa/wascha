@@ -3,6 +3,7 @@
 
 #include "helper.h"
 #include "Relay.h"
+#include "ElectromagneticRelay.h"
 
 class Wheel {
 
